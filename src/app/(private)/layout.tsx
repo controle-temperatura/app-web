@@ -5,6 +5,7 @@ import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import { useAuth } from "@/contexts/auth-context"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
+import Header from "@/components/layout/header/header"
 
 export default function PrivateLayout({
     children,
@@ -37,6 +38,7 @@ export default function PrivateLayout({
             <div className="flex min-h-screen w-full">
                 <Sidebar />
                 <SidebarInset className="flex-1">
+                    <Header title="Dashboard" />
                     <main className="flex-1 p-6">
                         {children}
                     </main>
