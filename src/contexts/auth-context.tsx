@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState, useEffect, ReactNode } from "react"
+import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from "react"
 import { api } from "@/lib/api"
 
 interface AuthContextType {
@@ -8,13 +8,26 @@ interface AuthContextType {
     isLoading: boolean
     login: () => void
     logout: () => Promise<void>
+    refreshToken: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
+const TOKEN_REFRESH_INTERVAL = 14 * 60 * 1000
+
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [isAuthenticated, setIsAuthenticated] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
+
+    const refreshToken = useCallback(async () => {
+        try {
+            await api.post("/auth/refresh", {}, { requiresAuth: false })
+            setIsAuthenticated(true)
+        } catch (error) {
+            console.error("Token refresh failed:", error)
+            setIsAuthenticated(false)
+        }
+    }, [])
 
     useEffect(() => {
         const checkAuth = async () => {
@@ -31,6 +44,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         checkAuth()
     }, [])
 
+    useEffect(() => {
+        if (!isAuthenticated) return
+
+        const intervalId = setInterval(() => {
+            refreshToken()
+        }, TOKEN_REFRESH_INTERVAL)
+
+        return () => clearInterval(intervalId)
+    }, [isAuthenticated, refreshToken])
+
     const login = () => {
         setIsAuthenticated(true)
     }
@@ -46,7 +69,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, isLoading, login, logout }}>
+        <AuthContext.Provider value={{ isAuthenticated, isLoading, login, logout, refreshToken }}>
             {children}
         </AuthContext.Provider>
     )

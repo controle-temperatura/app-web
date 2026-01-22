@@ -38,7 +38,7 @@ export default function PrivateLayout({
             <div className="flex min-h-screen w-full">
                 <Sidebar />
                 <SidebarInset className="flex-1">
-                    <Header title="Dashboard" />
+                    <Header />
                     <main className="flex-1 p-6">
                         {children}
                     </main>

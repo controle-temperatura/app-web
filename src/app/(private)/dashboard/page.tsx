@@ -281,7 +281,7 @@ export default function DashboardPage() {
                                     <YAxis />
                                     <Tooltip />
                                     <Legend />
-                                    <Bar dataKey="amount" fill="#8B5CF6" name="Quantidade" />
+                                    <Bar dataKey="amount" fill="#2F80ED" name="Quantidade" />
                                 </BarChart>
                             </ResponsiveContainer>
                         </CardContent>

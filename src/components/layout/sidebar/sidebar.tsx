@@ -6,11 +6,12 @@ import SidebarItem from "./sidebar-item"
 import SidebarItemAccordion from "./sidebar-item-accordion"
 import { HomeIcon, ThermometerIcon, SettingsIcon, LogOutIcon, SheetIcon, LayoutDashboardIcon, BellIcon, ListTreeIcon, FileTextIcon, UserIcon, ShieldIcon, PaletteIcon, GroupIcon, ChefHatIcon, UtensilsCrossedIcon } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
 
 export function Sidebar() {
     const { logout } = useAuth()
     const router = useRouter()
+    const pathname = usePathname()
 
     const handleLogout = async () => {
         await logout()
@@ -38,6 +39,9 @@ export function Sidebar() {
         }
     ]
 
+    // Check if any settings page is active
+    const isSettingsActive = pathname?.startsWith('/settings') || false
+
     return (
         <SidebarPrimitive>
             <SidebarContent className="relative">
@@ -46,26 +50,26 @@ export function Sidebar() {
                 </SidebarHeader>
                 <SidebarMenu className="space-y-2 p-4">
                     <SidebarMenuItem>
-                        <SidebarItem icon={<LayoutDashboardIcon className="h-4 w-4" />} label="Dashboard" href="/dashboard" isActive={true} onClick={() => router.push("/dashboard")} />
+                        <SidebarItem icon={<LayoutDashboardIcon className="h-4 w-4" />} label="Dashboard" href="/dashboard" isActive={pathname === '/dashboard'} onClick={() => router.push("/dashboard")} />
                     </SidebarMenuItem>
                     <SidebarMenuItem>
-                        <SidebarItem icon={<SheetIcon className="h-4 w-4" />} label="Tabelas" href="/temperatures" isActive={false} onClick={() => router.push("/temperatures")} />
+                        <SidebarItem icon={<SheetIcon className="h-4 w-4" />} label="Tabelas" href="/tables" isActive={pathname === '/tables'} onClick={() => router.push("/tables")} />
                     </SidebarMenuItem>
                     <SidebarMenuItem>
-                        <SidebarItem icon={<FileTextIcon className="h-4 w-4" />} label="Relatórios" href="/reports" isActive={false} onClick={() => router.push("/reports")} />
+                        <SidebarItem icon={<FileTextIcon className="h-4 w-4" />} label="Relatórios" href="/reports" isActive={pathname === '/reports'} onClick={() => router.push("/reports")} />
                     </SidebarMenuItem>
                     <SidebarMenuItem>
-                        <SidebarItem icon={<BellIcon className="h-4 w-4" />} label="Alertas" href="/alerts" isActive={false} onClick={() => router.push("/alerts")} />
+                        <SidebarItem icon={<BellIcon className="h-4 w-4" />} label="Alertas" href="/alerts" isActive={pathname === '/alerts'} onClick={() => router.push("/alerts")} />
                     </SidebarMenuItem>
                     <SidebarMenuItem>
-                        <SidebarItem icon={<ListTreeIcon className="h-4 w-4" />} label="Alimentos" href="/foods" isActive={false} onClick={() => router.push("/foods")} />
+                        <SidebarItem icon={<ListTreeIcon className="h-4 w-4" />} label="Alimentos" href="/foods" isActive={pathname === '/foods'} onClick={() => router.push("/foods")} />
                     </SidebarMenuItem>
                     <SidebarMenuItem>
                         <SidebarItemAccordion 
                             icon={<SettingsIcon className="h-4 w-4" />} 
                             label="Settings" 
                             subItems={settingsSubItems}
-                            isActive={false}
+                            isActive={isSettingsActive}
                         />
                     </SidebarMenuItem>
                     <SidebarMenuItem className="absolute bottom-4">

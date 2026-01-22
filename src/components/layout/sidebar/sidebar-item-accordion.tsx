@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { ChevronDownIcon } from "lucide-react"
 import { SidebarMenuSub, SidebarMenuSubItem, SidebarMenuSubButton } from "@/components/ui/sidebar"
+import { usePathname } from "next/navigation"
 
 interface SubItem {
     label: string
@@ -26,9 +27,11 @@ export default function SidebarItemAccordion({
     subItems, 
     isActive = false 
 }: SidebarItemAccordionProps) {
-    const [isOpen, setIsOpen] = useState(false)
+    const pathname = usePathname()
+    const [isOpen, setIsOpen] = useState(isActive)
     const activeClass = "bg-sidebar-accent text-brand-blue border-l-2 border-l-brand-blue"
     const hoverClass = "hover:bg-sidebar-accent hover:text-brand-blue hover:cursor-pointer"
+    const subItemActiveClass = "bg-sidebar-accent/50 text-brand-blue font-medium"
 
     return (
         <div className="w-full">
@@ -54,14 +57,20 @@ export default function SidebarItemAccordion({
             
             {isOpen && (
                 <SidebarMenuSub>
-                    {subItems.map((subItem, index) => (
-                        <SidebarMenuSubItem key={index}>
-                            <SidebarMenuSubButton onClick={subItem.onClick}>
-                                {subItem.icon}
-                                <span>{subItem.label}</span>
-                            </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
-                    ))}
+                    {subItems.map((subItem, index) => {
+                        const isSubItemActive = pathname === subItem.href
+                        return (
+                            <SidebarMenuSubItem key={index}>
+                                <SidebarMenuSubButton 
+                                    onClick={subItem.onClick}
+                                    className={cn(isSubItemActive && subItemActiveClass)}
+                                >
+                                    {subItem.icon}
+                                    <span>{subItem.label}</span>
+                                </SidebarMenuSubButton>
+                            </SidebarMenuSubItem>
+                        )
+                    })}
                 </SidebarMenuSub>
             )}
         </div>

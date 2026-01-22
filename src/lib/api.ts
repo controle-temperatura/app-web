@@ -2,13 +2,47 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/a
 
 interface RequestOptions extends RequestInit {
     requiresAuth?: boolean
+    _retry?: boolean 
+}
+
+let isRefreshing = false
+let refreshPromise: Promise<void> | null = null
+
+async function refreshToken(): Promise<void> {
+    if (isRefreshing && refreshPromise) {
+        return refreshPromise
+    }
+
+    isRefreshing = true
+    refreshPromise = (async () => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/auth/refresh`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+            })
+
+            if (!response.ok) {
+                throw new Error("Token refresh failed")
+            }
+
+            return
+        } finally {
+            isRefreshing = false
+            refreshPromise = null
+        }
+    })()
+
+    return refreshPromise
 }
 
 export async function apiRequest<T>(
     endpoint: string,
     options: RequestOptions = {}
 ): Promise<T> {
-    const { requiresAuth = true, headers, ...restOptions } = options
+    const { requiresAuth = true, headers, _retry = false, ...restOptions } = options
 
     const defaultHeaders: HeadersInit = {
         "Content-Type": "application/json",
@@ -22,6 +56,19 @@ export async function apiRequest<T>(
         },
         credentials: "include",
     })
+
+    if (response.status === 401 && requiresAuth && !_retry) {
+        try {
+            await refreshToken()
+            
+            return apiRequest<T>(endpoint, { ...options, _retry: true })
+        } catch (refreshError) {
+            const error = await response.json().catch(() => ({
+                message: "Sessão expirada. Por favor, faça login novamente.",
+            }))
+            throw new Error(error.message || "Unauthorized")
+        }
+    }
 
     if (!response.ok) {
         const error = await response.json().catch(() => ({
