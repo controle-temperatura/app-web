@@ -20,7 +20,6 @@ export default function DashboardPage() {
         const formattedDate = `${year}-${month}-${day}`
         try {
             const response = await api.get(`/dashboard?date=${formattedDate}`)
-            console.log(response)
             setData(response)
         } catch (error) {
             console.error(error)
@@ -98,14 +97,9 @@ export default function DashboardPage() {
                 sectorMap[sectorName] = { critical: 0, alert: 0, total: 0 }
             }
 
-            console.log(sectorMap)
-            console.log(alert)
-
             if (alert.danger === 'CRITICAL') {
-                console.log("CRITICAL", alert.temperatureRecord.food.sector.name)
                 sectorMap[sectorName].critical++
             } else if (alert.danger === 'ALERT') {
-                console.log("ALERT", alert.temperatureRecord.food.sector.name)
                 sectorMap[sectorName].alert++
             }
             
