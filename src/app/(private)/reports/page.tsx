@@ -5,7 +5,6 @@ import { api } from "@/lib/api";
 import { AlertTriangleIcon, CalendarCheckIcon, CalendarIcon, CalendarRangeIcon, CheckCircleIcon, DownloadIcon, Loader2Icon, SettingsIcon, ShieldCheckIcon, ThermometerIcon, TrendingUpIcon } from "lucide-react";
 import ReportsCard from "./card";
 import ShowCard from "./showcard";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Column, DataTable, Pagination, PaginationInfo } from "@/components/shared/data-table";
 import { Button } from "@/components/ui/button";
 
@@ -23,7 +22,6 @@ export default function ReportsPage() {
         setLoading(true);
         try {
             const response: any = await api.get("/dashboard/reports?tablePage=1&tableLimit=10");
-            console.log(response)
             setData(response);
             setPagination(response.pagination);
         } catch (error) {
