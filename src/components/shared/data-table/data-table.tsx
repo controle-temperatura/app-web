@@ -1,8 +1,8 @@
-// "use client"
+"use client"
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Loader2Icon } from "lucide-react";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 
 export interface Column<T> {
     header: string;
@@ -35,6 +35,10 @@ export function DataTable<T>({
             </div>
         );
     }
+
+    useEffect(() => {
+        console.log(data)
+    }, [data]);
 
     return (
         <Table>
