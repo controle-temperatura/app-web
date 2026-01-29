@@ -1,13 +1,9 @@
-"use client"
-
-import { api } from "@/lib/api";
-import { useEffect, useState } from "react";
-import { FilterIcon, PowerIcon, SearchIcon, UtensilsCrossedIcon } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { Select, SelectItem, SelectTrigger, SelectValue, SelectContent } from "@/components/ui/select";
+import { PowerIcon, SearchIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export interface FilterValues {
-    sectorId: string;
     active: boolean | null;
     search: string;
 }
@@ -17,46 +13,20 @@ interface FiltersProps {
 }
 
 export default function Filters({ onFilterChange }: FiltersProps) {
-    const [sectors, setSectors] = useState<any>([]);
-    const [selectedSector, setSelectedSector] = useState<string>("");
     const [selectedActive, setSelectedActive] = useState<boolean | null>(null);
     const [searchText, setSearchText] = useState<string>("");
-
-    const fetchFilterOptions = async () => {
-        const response = await api.get("/sectors/filters");
-        setSectors(response);
-    }
-
-    useEffect(() => {
-        fetchFilterOptions();
-    }, []);
 
     useEffect(() => {
         if (onFilterChange) {
             onFilterChange({
-                sectorId: selectedSector,
                 active: selectedActive,
                 search: searchText,
             });
         }
-    }, [selectedSector, selectedActive, searchText]);
+    }, [selectedActive, searchText]);
 
     return (
         <div className="flex flex-row gap-4">
-            <Select value={selectedSector} onValueChange={(value) => setSelectedSector(value === "_clear_" ? "" : value)}  >
-                <SelectTrigger id="sector-filter" className="w-full cursor-pointer">
-                    <span className="flex items-center gap-2">
-                        <UtensilsCrossedIcon className="w-4 h-4 text-primary" />
-                        <SelectValue placeholder="Setor"  className="w-full" />
-                    </span> 
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectItem key="all" value="_clear_">Todos os setores</SelectItem>
-                    {sectors?.map((sector: any) => (
-                        <SelectItem key={sector.id} value={sector.id}>{sector.name}</SelectItem>
-                    ))}
-                </SelectContent>
-            </Select>
             <Select value={selectedActive === null ? "_clear_" : selectedActive.toString()} onValueChange={(value) => setSelectedActive(value === "_clear_" ? null : value === "true")}>
                 <SelectTrigger id="active-filter" className="w-full cursor-pointer">
                     <span className="flex items-center gap-2">
@@ -76,9 +46,9 @@ export default function Filters({ onFilterChange }: FiltersProps) {
                 <Input 
                     type="text" 
                     placeholder="Pesquisar" 
-                    className="w-56 pl-10"
-                    value={searchText}
-                    onChange={(e) => setSearchText(e.target.value)}
+                    value={searchText} 
+                    onChange={(e) => setSearchText(e.target.value)} 
+                    className="w-56 pl-10" 
                 />
             </div>
         </div>

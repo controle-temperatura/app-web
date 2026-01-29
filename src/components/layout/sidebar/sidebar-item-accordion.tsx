@@ -35,16 +35,7 @@ export default function SidebarItemAccordion({
 
     return (
         <div className="w-full">
-            <Button 
-                variant="ghost" 
-                size="icon" 
-                className={cn(
-                    "w-full justify-start px-4", 
-                    isActive && activeClass, 
-                    hoverClass
-                )} 
-                onClick={() => setIsOpen(!isOpen)}
-            >
+            <Button variant="ghost" size="icon" className={cn("w-full justify-start px-4", isActive && activeClass, hoverClass)} onClick={() => setIsOpen(!isOpen)}>
                 {icon}
                 <span className="flex-1 text-left">{label}</span>
                 <ChevronDownIcon 

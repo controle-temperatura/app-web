@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import Topbar from "./topbar";
 import { FilterValues } from "./filters";
 import { api } from "@/lib/api";
-import FoodsCard from "./card";
+import SimpleCard from "@/components/shared/simple-card/simple-card";
 import { Button } from "@/components/ui/button";
 import { PencilIcon, TrashIcon } from "lucide-react";
 import { DataTable, Pagination, Column, PaginationInfo } from "@/components/shared/data-table";
@@ -32,7 +32,7 @@ export default function FoodsPage() {
 
     const [filters, setFilters] = useState<FilterValues>({
         sectorId: "",
-        active: false,
+        active: null,
         search: "",
     });
 
@@ -45,7 +45,7 @@ export default function FoodsPage() {
             });
 
             if (filterValues.sectorId) params.append('sectorId', filterValues.sectorId);
-            if (filterValues.active) params.append('active', filterValues.active.toString());
+            if (filterValues.active !== null) params.append('active', filterValues.active.toString());
             if (filterValues.search) params.append('search', filterValues.search);
 
             const response: any = await api.get(`/foods?${params.toString()}`);
@@ -68,6 +68,10 @@ export default function FoodsPage() {
     useEffect(() => {
         console.log(foodsData)
     }, [foodsData]);
+
+    useEffect(() => {
+        fetchFoods(1, filters);
+    }, [filters, fetchFoods]);
 
     const handlePageChange = useCallback((newPage: number) => {
         if (newPage >= 1 && newPage <= pagination.totalPages) {
@@ -119,9 +123,9 @@ export default function FoodsPage() {
         <div className="flex flex-col gap-4">
             <Topbar onFilterChange={setFilters} />
             <div className="grid grid-cols-3 gap-4 w-2/3 mx-auto mt-4">
-                <FoodsCard value={foods.totalCount} text="Total de Alimentos" />
-                <FoodsCard value={foods.sectorsCount} text="Setores Cadastrados" />
-                <FoodsCard value={foods.activeCount} text="Alimentos Ativos" />
+                <SimpleCard value={foods.totalCount} text="Total de Alimentos" />
+                <SimpleCard value={foods.sectorsCount} text="Setores Cadastrados" />
+                <SimpleCard value={foods.activeCount} text="Alimentos Ativos" />
             </div>
             <div className="flex flex-col gap-2">
                 <DataTable 

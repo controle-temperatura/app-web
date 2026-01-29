@@ -1,11 +1,11 @@
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
-interface FoodsCardProps {
+interface SimpleCardProps {
     value: number;
     text: string;
 }
 
-export default function FoodsCard({ value, text }: FoodsCardProps) {
+export default function SimpleCard({ value, text }: SimpleCardProps) {
     return (
         <Card>
             <CardHeader>

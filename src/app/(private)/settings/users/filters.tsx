@@ -1,13 +1,11 @@
-"use client"
-
-import { api } from "@/lib/api";
-import { useEffect, useState } from "react";
-import { FilterIcon, PowerIcon, SearchIcon, UtensilsCrossedIcon } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { api } from "@/lib/api";
+import { Contact2Icon, PowerIcon, SearchIcon, ShieldIcon } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 
 export interface FilterValues {
-    sectorId: string;
+    role: string;
     active: boolean | null;
     search: string;
 }
@@ -17,43 +15,43 @@ interface FiltersProps {
 }
 
 export default function Filters({ onFilterChange }: FiltersProps) {
-    const [sectors, setSectors] = useState<any>([]);
-    const [selectedSector, setSelectedSector] = useState<string>("");
-    const [selectedActive, setSelectedActive] = useState<boolean | null>(null);
-    const [searchText, setSearchText] = useState<string>("");
+    const [roles, setRoles] = useState<any[]>([])
+    const [selectedRole, setSelectedRole] = useState<string>("")
+    const [selectedActive, setSelectedActive] = useState<boolean | null>(null)
+    const [searchText, setSearchText] = useState<string>("")
 
-    const fetchFilterOptions = async () => {
-        const response = await api.get("/sectors/filters");
-        setSectors(response);
-    }
+    const fetchFilterOptions = useCallback(async () => {
+        const response: any = await api.get("/users/roles")
+        setRoles(response)
+    }, [])
 
     useEffect(() => {
-        fetchFilterOptions();
-    }, []);
+        fetchFilterOptions()
+    }, [])
 
     useEffect(() => {
         if (onFilterChange) {
             onFilterChange({
-                sectorId: selectedSector,
+                role: selectedRole,
                 active: selectedActive,
-                search: searchText,
+                search: searchText,   
             });
         }
-    }, [selectedSector, selectedActive, searchText]);
+    }, [selectedRole, selectedActive, searchText]);
 
     return (
         <div className="flex flex-row gap-4">
-            <Select value={selectedSector} onValueChange={(value) => setSelectedSector(value === "_clear_" ? "" : value)}  >
-                <SelectTrigger id="sector-filter" className="w-full cursor-pointer">
+            <Select value={selectedRole} onValueChange={(value) => setSelectedRole(value === "_clear_" ? "" : value)}  >
+                <SelectTrigger id="role-filter" className="w-full cursor-pointer">
                     <span className="flex items-center gap-2">
-                        <UtensilsCrossedIcon className="w-4 h-4 text-primary" />
-                        <SelectValue placeholder="Setor"  className="w-full" />
+                        <Contact2Icon className="w-4 h-4 text-primary" />
+                        <SelectValue placeholder="Cargo"  className="w-full" />
                     </span> 
                 </SelectTrigger>
                 <SelectContent>
-                    <SelectItem key="all" value="_clear_">Todos os setores</SelectItem>
-                    {sectors?.map((sector: any) => (
-                        <SelectItem key={sector.id} value={sector.id}>{sector.name}</SelectItem>
+                    <SelectItem key="all" value="_clear_">Todos os cargos</SelectItem>
+                    {roles?.map((role: any) => (
+                        <SelectItem key={role.id} value={role.id}>{role.name}</SelectItem>
                     ))}
                 </SelectContent>
             </Select>
@@ -76,9 +74,9 @@ export default function Filters({ onFilterChange }: FiltersProps) {
                 <Input 
                     type="text" 
                     placeholder="Pesquisar" 
-                    className="w-56 pl-10"
-                    value={searchText}
-                    onChange={(e) => setSearchText(e.target.value)}
+                    value={searchText} 
+                    onChange={(e) => setSearchText(e.target.value)} 
+                    className="w-56 pl-10" 
                 />
             </div>
         </div>

@@ -7,8 +7,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import Link from "next/link"
 import { useLogin } from "@/hooks/use-login"
 import { toast } from "sonner"
+import { useCompany } from "@/hooks/use-company"
 
-export default function LoginForm() {
+interface LoginFormProps {
+    company: any
+}
+
+export default function LoginForm({ company }: LoginFormProps) {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const { handleLogin, isLoading, error } = useLogin()
@@ -34,7 +39,7 @@ export default function LoginForm() {
         <Card className="h-120 w-96 flex flex-col justify-center rounded-r-none">
             <CardHeader className="space-y-1 text-center">
                 <CardTitle className="text-3xl font-bold">Bem vindo!</CardTitle>
-                <CardDescription className="text-md">Entre na sua conta Aneto</CardDescription>
+                <CardDescription className="text-md">Entre na sua conta {company?.shortName}</CardDescription>
             </CardHeader>
 
             <CardContent className="space-y-4">

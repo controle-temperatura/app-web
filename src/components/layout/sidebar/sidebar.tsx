@@ -4,9 +4,10 @@ import { Sidebar as SidebarPrimitive, SidebarContent, SidebarHeader, SidebarMenu
 import Image from "next/image"
 import SidebarItem from "./sidebar-item"
 import SidebarItemAccordion from "./sidebar-item-accordion"
-import { HomeIcon, ThermometerIcon, SettingsIcon, LogOutIcon, SheetIcon, LayoutDashboardIcon, BellIcon, ListTreeIcon, FileTextIcon, UserIcon, ShieldIcon, PaletteIcon, GroupIcon, ChefHatIcon, UtensilsCrossedIcon } from "lucide-react"
+import { HomeIcon, ThermometerIcon, SettingsIcon, LogOutIcon, SheetIcon, LayoutDashboardIcon, BellIcon, ListTreeIcon, FileTextIcon, UserIcon, ShieldIcon, PaletteIcon, GroupIcon, ChefHatIcon, UtensilsCrossedIcon, UsersIcon } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
 import { useRouter, usePathname } from "next/navigation"
+import { useCompany } from "@/hooks/use-company"
 
 export function Sidebar() {
     const { logout } = useAuth()
@@ -18,6 +19,8 @@ export function Sidebar() {
         router.push("/login")
     }
 
+    const { company } = useCompany()
+
     const settingsSubItems = [
         {
             label: "Empresa",
@@ -27,7 +30,7 @@ export function Sidebar() {
         },
         {
             label: "Usuários",
-            icon: <GroupIcon className="h-4 w-4" />,
+            icon: <UsersIcon className="h-4 w-4" />,
             href: "/settings/users",
             onClick: () => router.push("/settings/users")
         },
@@ -39,14 +42,13 @@ export function Sidebar() {
         }
     ]
 
-    // Check if any settings page is active
     const isSettingsActive = pathname?.startsWith('/settings') || false
 
     return (
         <SidebarPrimitive>
             <SidebarContent className="relative">
                 <SidebarHeader className="p-4">
-                    <Image src="https://aneto.com.br/wp-content/uploads/2025/05/logo.svg" alt="Logo" width={180} height={100} className="w-auto h-12" />
+                    <Image src={company?.logoUrl || "https://freesvg.org/img/logo-generic.png"} alt="Logo" width={180} height={100} className="w-auto h-12" />
                 </SidebarHeader>
                 <SidebarMenu className="space-y-2 p-4">
                     <SidebarMenuItem>
@@ -67,7 +69,7 @@ export function Sidebar() {
                     <SidebarMenuItem>
                         <SidebarItemAccordion 
                             icon={<SettingsIcon className="h-4 w-4" />} 
-                            label="Settings" 
+                            label="Configurações" 
                             subItems={settingsSubItems}
                             isActive={isSettingsActive}
                         />
