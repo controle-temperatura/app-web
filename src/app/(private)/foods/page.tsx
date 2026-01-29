@@ -66,10 +66,6 @@ export default function FoodsPage() {
     }, []);
 
     useEffect(() => {
-        console.log(foodsData)
-    }, [foodsData]);
-
-    useEffect(() => {
         fetchFoods(1, filters);
     }, [filters, fetchFoods]);
 

@@ -93,7 +93,11 @@ export default function UsersPage() {
         },
         {
             header: 'Status',
-            accessor: 'active',
+            cell: (record: RecordData) => (
+                <span className={record.active ? 'text-green-500 bg-green-500/10 px-2 py-1 rounded-md' : 'text-red-500 bg-red-500/10 px-2 py-1 rounded-md'}>
+                    {record.active ? 'Ativo' : 'Inativo'}
+                </span>
+            )
         },
         {
             header: 'Ações',
