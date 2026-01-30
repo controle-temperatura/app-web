@@ -35,11 +35,7 @@ export function DataTable<T>({
             </div>
         );
     }
-
-    useEffect(() => {
-        console.log(data)
-    }, [data]);
-
+    
     return (
         <Table>
             <TableHeader className="bg-slate-200 text-white">

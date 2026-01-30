@@ -49,8 +49,6 @@ export default function UsersPage() {
 
             const response: any = await api.get(`/users?${params.toString()}`);
 
-            console.log(response)
-
             setPagination(response.pagination);
             setUsers(response)
         } catch (error) {

@@ -25,9 +25,6 @@ export function Pagination({
     recordsCount 
 }: PaginationProps) {
 
-    useEffect(() => {
-        console.log(pagination);
-    }, [pagination]);
     const getPageNumbers = () => {
         const pages = [];
         const maxPagesToShow = 5;
@@ -46,10 +43,6 @@ export function Pagination({
     };
 
     const displayRecordsCount = recordsCount ?? 0;
-
-    useEffect(() => {
-        console.log(pagination);
-    }, [pagination]);
 
     return (
         <div className="flex items-center justify-between px-2 py-4">

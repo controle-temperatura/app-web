@@ -80,6 +80,41 @@ export async function apiRequest<T>(
     return response.json()
 }
 
+export async function apiDownload(
+    endpoint: string,
+    options: RequestOptions = {}
+): Promise<Response> {
+    const { requiresAuth = true, headers, _retry = false, ...restOptions } = options
+
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+        ...restOptions,
+        headers: {
+            ...headers,
+        },
+        credentials: "include",
+    })
+
+    if (response.status === 401 && requiresAuth && !_retry) {
+        await refreshToken()
+        return apiDownload(endpoint, { ...options, _retry: true })
+    }
+
+    if (!response.ok) {
+        const contentType = response.headers.get("content-type") || ""
+        if (contentType.includes("application/json")) {
+            const error = await response.json().catch(() => ({
+                message: "Erro na requisição",
+            }))
+            throw new Error(error.message || `HTTP error! status: ${response.status}`)
+        }
+
+        const text = await response.text().catch(() => "")
+        throw new Error(text || `HTTP error! status: ${response.status}`)
+    }
+
+    return response
+}
+
 export const api = {
     get: <T>(endpoint: string, options?: RequestOptions) =>
         apiRequest<T>(endpoint, { ...options, method: "GET" }),
@@ -107,4 +142,7 @@ export const api = {
             method: "PATCH",
             body: JSON.stringify(data),
         }),
+
+    download: (endpoint: string, options?: RequestOptions) =>
+        apiDownload(endpoint, { ...options, method: "GET" }),
 }

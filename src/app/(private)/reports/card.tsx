@@ -6,9 +6,10 @@ interface ReportsCardProps {
     description: string;
     value: string;
     icon: React.ReactNode;
+    onClick: () => void;
 }
 
-export default function ReportsCard({ title, description, value, icon }: ReportsCardProps) {
+export default function ReportsCard({ title, description, value, icon, onClick }: ReportsCardProps) {
     return (
         <Card>
             <CardHeader>
@@ -16,7 +17,7 @@ export default function ReportsCard({ title, description, value, icon }: Reports
                 <CardDescription>{description}</CardDescription>
             </CardHeader>
             <CardContent>
-                <Button variant={value === "CUSTOM" ? "outline" : "default"} size="icon" className="w-full hover:cursor-pointer">Gerar Relatório</Button>
+                <Button variant={value === "CUSTOM" ? "outline" : "default"} size="icon" className="w-full hover:cursor-pointer" onClick={onClick}>Gerar Relatório</Button>
             </CardContent>
         </Card>
     )

@@ -3,7 +3,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from "react"
 import { api } from "@/lib/api"
 
-export interface Company {
+interface Company {
     id: string
     name: string
     shortName?: string
