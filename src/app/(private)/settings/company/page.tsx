@@ -129,7 +129,6 @@ export default function CompanyPage() {
 
     return (
         <div className="max-w-5xl mx-auto space-y-6 pb-8">
-            {/* Header Section */}
             <div className="space-y-2">
                 <h1 className="text-4xl font-bold tracking-tight">
                     Configurações da Empresa
@@ -139,7 +138,6 @@ export default function CompanyPage() {
                 </p>
             </div>
 
-            {/* Single Card Container */}
             <Card className="overflow-hidden">
                 <CardHeader className="bg-muted/30 border-b">
                     <CardTitle className="flex items-center gap-2 text-2xl">
@@ -153,7 +151,6 @@ export default function CompanyPage() {
                 <CardContent className="p-8">
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                            {/* Logo Upload Section */}
                             <div className="space-y-4">
                                 <div className="flex items-center gap-2 pb-2">
                                     <div className="h-px flex-1 bg-gradient-to-r from-border to-transparent" />
@@ -229,7 +226,6 @@ export default function CompanyPage() {
                                 </div>
                             </div>
 
-                            {/* Basic Information Section */}
                             <div className="space-y-4">
                                 <div className="flex items-center gap-2 pb-2">
                                     <div className="h-px flex-1 bg-gradient-to-r from-border to-transparent" />
@@ -304,7 +300,6 @@ export default function CompanyPage() {
                                     />
                                 </div>
 
-                                {/* Contact Information Section */}
                                 <div className="space-y-4">
                                     <div className="flex items-center gap-2 pb-2">
                                         <div className="h-px flex-1 bg-gradient-to-r from-border to-transparent" />
@@ -360,7 +355,6 @@ export default function CompanyPage() {
                                     </div>
                                 </div>
 
-                                {/* Address Section */}
                                 <div className="space-y-4">
                                     <div className="flex items-center gap-2 pb-2">
                                         <div className="h-px flex-1 bg-gradient-to-r from-border to-transparent" />
@@ -395,7 +389,6 @@ export default function CompanyPage() {
                                     />
                                 </div>
 
-                                {/* Action Buttons */}
                                 <div className="flex justify-end gap-3 pt-6 border-t">
                                     <Button
                                         type="button"

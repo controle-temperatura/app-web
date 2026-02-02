@@ -14,6 +14,7 @@ import { PencilIcon, TrashIcon } from "lucide-react";
 import { DataTable, Pagination, Column, PaginationInfo } from "@/components/shared/data-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
+import { z } from "zod";
 
 interface RecordData {
     id: string;
@@ -32,8 +33,16 @@ type FoodForm = {
 };
 
 type EditForm = FoodForm & {
+    id?: string;
     active: boolean;
 };
+
+const foodSchema = z.object({
+    name: z.string().min(1, "Nome é obrigatório."),
+    sectorId: z.string().uuid("Setor inválido."),
+    tempMin: z.number().refine((value) => Number.isFinite(value), { message: "Temperatura mínima inválida." }),
+    tempMax: z.number().refine((value) => Number.isFinite(value), { message: "Temperatura máxima inválida." }),
+});
 
 export default function FoodsPage() {
     const [foods, setFoods] = useState<any>([]);
@@ -90,6 +99,16 @@ export default function FoodsPage() {
 
     const parseNumberInput = (value: string) => (value === "" ? undefined : Number(value));
 
+    const validateFoodPayload = (payload: FoodForm) => {
+        const result = foodSchema.safeParse(payload);
+        if (!result.success) {
+            const message = result.error.issues[0]?.message ?? "Dados inválidos.";
+            toast.error(message);
+            return null;
+        }
+        return result.data;
+    };
+
     const handleCancelCreate = () => {
         setIsCreateModalOpen(false);
         setCreateForm({
@@ -122,27 +141,16 @@ export default function FoodsPage() {
     }, [useAutomaticName])
 
     const handleCreateFood = async () => {
-        if (
-            createForm.name === "" ||
-            createForm.sectorId === "" ||
-            createForm.tempMin === undefined ||
-            createForm.tempMax === undefined ||
-            Number.isNaN(createForm.tempMin) ||
-            Number.isNaN(createForm.tempMax) ||
-            createForm.tempMin === 0 ||
-            createForm.tempMax === 0
-        ) {
-            toast.error("Por favor, preencha todos os campos obrigatórios.");
-            return;
-        }
-
         const payload = {
             ...createForm,
             tempMin: Number(createForm.tempMin),
             tempMax: Number(createForm.tempMax),
         };
 
-        const response: any = await api.post(`/foods`, payload);
+        const parsedPayload = validateFoodPayload(payload);
+        if (!parsedPayload) return;
+
+        const response: any = await api.post(`/foods`, parsedPayload);
         setIsCreateModalOpen(false);
         setCreateForm({
             name: "",
@@ -164,6 +172,7 @@ export default function FoodsPage() {
     }, [fetchSectors]);
 
     const [editForm, setEditForm] = useState<EditForm>({
+        id: undefined,
         name: "",
         active: true,
         sectorId: "",
@@ -185,13 +194,23 @@ export default function FoodsPage() {
     }
 
     const handleConfirmEdit = async () => {
-        const _payload = {
-            ...editForm,
+        const parsedPayload = validateFoodPayload({
+            name: editForm.name,
+            sectorId: editForm.sectorId,
             tempMin: Number(editForm.tempMin),
             tempMax: Number(editForm.tempMax),
-        };
+        });
+        if (!parsedPayload) return;
 
-        const { id, ...payload } = _payload;
+        const { id } = editForm;
+        if (!id) {
+            toast.error("Alimento inválido para edição.");
+            return;
+        }
+        const payload = {
+            ...parsedPayload,
+            active: editForm.active,
+        };
 
         const response: any = await api.patch(`/foods/${id}`, payload);
         setIsEditModalOpen(false);
@@ -201,6 +220,7 @@ export default function FoodsPage() {
     const handleCancelEdit = () => {
         setIsEditModalOpen(false);
         setEditForm({
+            id: undefined,
             name: "",
             active: true,
             sectorId: "",
