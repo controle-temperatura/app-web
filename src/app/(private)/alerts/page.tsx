@@ -49,8 +49,6 @@ export default function AlertsPage() {
     const handleCorrectiveActionRecord = async(record: any) => {
         const recordData: any = await api.get(`/alerts/${record.id}`);
 
-        console.log(recordData)
-
         setSelectedAlertToCorrectiveAction(recordData);
         setCorrectedTemperature(null);
         setCorrectiveAction("");
