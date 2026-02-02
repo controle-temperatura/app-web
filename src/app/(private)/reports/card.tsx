@@ -17,7 +17,7 @@ export default function ReportsCard({ title, description, value, icon, onClick }
                 <CardDescription>{description}</CardDescription>
             </CardHeader>
             <CardContent>
-                <Button variant={value === "CUSTOM" ? "outline" : "default"} size="icon" className="w-full hover:cursor-pointer" onClick={onClick}>Gerar Relatório</Button>
+                <Button variant={value === "CUSTOM" ? "outline" : "default"} disabled={value === "CUSTOM"} size="icon" className="w-full hover:cursor-pointer" onClick={onClick}>{value === "CUSTOM" ? "Em desenvolvimento" : "Gerar Relatório"}</Button>
             </CardContent>
         </Card>
     )

@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import { useEffect } from "react";
+import type { MouseEvent } from "react";
 
 export interface PaginationInfo {
     page: number;
@@ -13,7 +13,7 @@ export interface PaginationInfo {
 
 export interface PaginationProps {
     pagination: PaginationInfo;
-    onPageChange: (page: number) => void;
+    onPageChange: (page: number, event?: MouseEvent<HTMLButtonElement>) => void;
     disabled?: boolean;
     recordsCount?: number;
 }
@@ -55,7 +55,7 @@ export function Pagination({
                 <Button 
                     variant="outline" 
                     size="icon"
-                    onClick={() => onPageChange(1)} 
+                    onClick={(event) => onPageChange(1, event)} 
                     disabled={pagination.page === 1 || disabled}
                 >
                     <ChevronLeftIcon className="w-4 h-4" />
@@ -64,7 +64,7 @@ export function Pagination({
                 <Button 
                     variant="outline" 
                     size="icon"
-                    onClick={() => onPageChange(pagination.page - 1)} 
+                    onClick={(event) => onPageChange(pagination.page - 1, event)} 
                     disabled={pagination.page === 1 || disabled}
                 >
                     <ChevronLeftIcon className="w-4 h-4" />
@@ -76,7 +76,7 @@ export function Pagination({
                             key={pageNum}
                             variant={pageNum === pagination.page ? "default" : "outline"}
                             size="icon"
-                            onClick={() => onPageChange(pageNum)}
+                            onClick={(event) => onPageChange(pageNum, event)}
                             disabled={disabled}
                             className="w-10"
                         >
@@ -88,7 +88,7 @@ export function Pagination({
                 <Button 
                     variant="outline" 
                     size="icon"
-                    onClick={() => onPageChange(pagination.page + 1)} 
+                    onClick={(event) => onPageChange(pagination.page + 1, event)} 
                     disabled={pagination.page === pagination.totalPages || disabled}
                 >
                     <ChevronRightIcon className="w-4 h-4" />
@@ -96,7 +96,7 @@ export function Pagination({
                 <Button 
                     variant="outline" 
                     size="icon"
-                    onClick={() => onPageChange(pagination.totalPages)} 
+                    onClick={(event) => onPageChange(pagination.totalPages, event)} 
                     disabled={pagination.page === pagination.totalPages || disabled}
                 >
                     <ChevronRightIcon className="w-4 h-4" />

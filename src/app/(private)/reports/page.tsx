@@ -1,5 +1,6 @@
 "use client";
 
+import type { MouseEvent } from "react";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { AlertTriangleIcon, CalendarCheckIcon, CalendarIcon, CalendarRangeIcon, CheckCircleIcon, DownloadIcon, Loader2Icon, SettingsIcon, ShieldCheckIcon, ThermometerIcon, TrendingUpIcon } from "lucide-react";
@@ -59,7 +60,7 @@ export default function ReportsPage() {
         setLoading(true);
         try {
             const response: any = await api.get(`/reports/updateTablePage?page=${page}&limit=10`);
-            setData({ ...data, response });
+            setData({ ...data, reports: response.reports, pagination: response.pagination });
             setPagination(response.pagination);
         } catch (error) {
             console.error(error);
@@ -72,7 +73,8 @@ export default function ReportsPage() {
         fetchData();
     }, [])
 
-    const handlePageChange = (page: number) => {
+    const handlePageChange = (page: number, event?: MouseEvent<HTMLButtonElement>) => {
+        event?.preventDefault();
         fetchTablePage(page);
     }
 
@@ -191,6 +193,10 @@ export default function ReportsPage() {
         {
             header: "Intervalo",
             accessor: "period"
+        },
+        {
+            header: "Formato",
+            accessor: "format"
         },
         {
             header: "Usuário",
