@@ -15,6 +15,7 @@ import { DataTable, Pagination, Column, PaginationInfo } from "@/components/shar
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import { z } from "zod";
+import { useUser } from "@/hooks/use-user";
 
 interface RecordData {
     id: string;
@@ -45,6 +46,10 @@ const foodSchema = z.object({
 });
 
 export default function FoodsPage() {
+    const { user } = useUser()
+    const userRole = user?.role ?? "COLABORATOR"
+    const isAdmin = userRole === "ADMIN"
+
     const [foods, setFoods] = useState<any>([]);
     const [foodsLoading, setFoodsLoading] = useState<boolean>(false);
     const [foodsData, setFoodsData] = useState<RecordData[]>([]);
@@ -313,10 +318,17 @@ export default function FoodsPage() {
                         size="icon"
                         className="w-6 h-6 hover:bg-transparent hover:cursor-pointer"
                         onClick={() => handleEditFood(record)}
+                        disabled={!isAdmin}
                     >
                         <PencilIcon className="w-6 h-6" />
                     </Button>
-                    <Button variant="ghost" size="icon" className="w-6 h-6 hover:bg-transparent hover:cursor-pointer" onClick={() => handleOpenDeleteModal(record)}>
+                    <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        className="w-6 h-6 hover:bg-transparent hover:cursor-pointer" 
+                        onClick={() => handleOpenDeleteModal(record)} 
+                        disabled={!isAdmin}
+                    >
                         <TrashIcon className="w-6 h-6" />
                     </Button>
                 </div>

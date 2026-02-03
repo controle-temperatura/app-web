@@ -46,7 +46,7 @@ export default function UsersPage() {
     const [createForm, setCreateForm] = useState<any>({
         name: "",
         email: "",
-        password: "",
+        password: undefined,
         role: "COLABORATOR",
         passwordType: "LINK",
     })
@@ -56,7 +56,7 @@ export default function UsersPage() {
         setCreateForm({
             name: "",
             email: "",
-            password: "",
+            password: undefined,
             role: "COLABORATOR",
             passwordType: "LINK",
         })
@@ -67,7 +67,7 @@ export default function UsersPage() {
         setCreateForm({
             name: "",
             email: "",
-            password: "",
+            password: undefined,
             role: "COLABORATOR",
             passwordType: "LINK",
         })

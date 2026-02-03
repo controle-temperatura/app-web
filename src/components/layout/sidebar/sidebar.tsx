@@ -8,11 +8,13 @@ import { HomeIcon, ThermometerIcon, SettingsIcon, LogOutIcon, SheetIcon, LayoutD
 import { useAuth } from "@/contexts/auth-context"
 import { useRouter, usePathname } from "next/navigation"
 import { useCompany } from "@/hooks/use-company"
+import { useUser } from "@/hooks/use-user"
 
 export function Sidebar() {
     const { logout } = useAuth()
     const router = useRouter()
     const pathname = usePathname()
+    const { user } = useUser()
 
     const handleLogout = async () => {
         await logout()
@@ -20,6 +22,10 @@ export function Sidebar() {
     }
 
     const { company } = useCompany()
+
+    const userRole = user?.role ?? "COLABORATOR"
+    const isAdmin = userRole === "ADMIN"
+    const isAuditor = userRole === "AUDITOR"
 
     const settingsSubItems = [
         {
@@ -57,23 +63,27 @@ export function Sidebar() {
                     <SidebarMenuItem>
                         <SidebarItem icon={<SheetIcon className="h-4 w-4" />} label="Tabelas" href="/tables" isActive={pathname === '/tables'} onClick={() => router.push("/tables")} />
                     </SidebarMenuItem>
-                    <SidebarMenuItem>
-                        <SidebarItem icon={<FileTextIcon className="h-4 w-4" />} label="Relatórios" href="/reports" isActive={pathname === '/reports'} onClick={() => router.push("/reports")} />
-                    </SidebarMenuItem>
+                    {(isAdmin || isAuditor) && (
+                        <SidebarMenuItem>
+                            <SidebarItem icon={<FileTextIcon className="h-4 w-4" />} label="Relatórios" href="/reports" isActive={pathname === '/reports'} onClick={() => router.push("/reports")} />
+                        </SidebarMenuItem>
+                    )}
                     <SidebarMenuItem>
                         <SidebarItem icon={<BellIcon className="h-4 w-4" />} label="Alertas" href="/alerts" isActive={pathname === '/alerts'} onClick={() => router.push("/alerts")} />
                     </SidebarMenuItem>
                     <SidebarMenuItem>
                         <SidebarItem icon={<ListTreeIcon className="h-4 w-4" />} label="Alimentos" href="/foods" isActive={pathname === '/foods'} onClick={() => router.push("/foods")} />
                     </SidebarMenuItem>
-                    <SidebarMenuItem>
-                        <SidebarItemAccordion 
-                            icon={<SettingsIcon className="h-4 w-4" />} 
-                            label="Configurações" 
-                            subItems={settingsSubItems}
-                            isActive={isSettingsActive}
-                        />
-                    </SidebarMenuItem>
+                    {isAdmin && (
+                        <SidebarMenuItem>
+                            <SidebarItemAccordion 
+                                icon={<SettingsIcon className="h-4 w-4" />} 
+                                label="Configurações" 
+                                subItems={settingsSubItems}
+                                isActive={isSettingsActive}
+                            />
+                        </SidebarMenuItem>
+                    )}
                     <SidebarMenuItem className="absolute bottom-4">
                         <SidebarItem icon={<LogOutIcon className="h-4 w-4" />} label="Sair" href="#" isActive={false} onClick={handleLogout} isLogout />
                     </SidebarMenuItem>
