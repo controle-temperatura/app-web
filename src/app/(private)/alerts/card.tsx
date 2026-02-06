@@ -11,14 +11,16 @@ interface AlertCardProps {
     data: AlertData[];
     textColor: string;
     backgroundColor: string;
+    type: string;
 }
 
-export default function AlertCard({ title, description, data, textColor, backgroundColor }: AlertCardProps) {
+export default function AlertCard({ title, description, data, textColor, backgroundColor, type }: AlertCardProps) {
     const borderColorMap: Record<string, string> = {
         'destructive': 'border-l-destructive',
         'yellow-500': 'border-l-yellow-500',
         'green-500': 'border-l-green-500',
         'blue-500': 'border-l-blue-500',
+        'brand-blue': 'border-l-brand-blue',
     };
 
     const borderClass = borderColorMap[textColor] || 'border-l-foreground';
@@ -34,9 +36,9 @@ export default function AlertCard({ title, description, data, textColor, backgro
             <CardContent className="overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                 <div className="flex flex-col gap-2">
                     {data.map((item) => (
-                        <div key={item.key} className="flex flex-row gap-1 items-center justify-between">
+                        <div key={item.key} className={`flex ${type === 'PENDING' ? 'flex-col' : 'flex-row'} gap-1 ${type === 'PENDING' ? 'items-start' : 'items-center'} justify-between`}>
                             <span className="text-foreground font-medium">{item.key}</span>
-                            <span className={`text-${textColor} font-bold`}>{item.value}</span>
+                            <span className={`text-${textColor} ${type === 'PENDING' ? 'text-sm' : 'text-base'} font-bold`}>{item.value}</span>
                         </div>
                     ))}
                 </div>

@@ -151,7 +151,7 @@ export default function AlertsPage() {
         "CRITICAL": { textColor: 'destructive', backgroundColor: 'bg-destructive/10' },
         "ALERT": { textColor: 'yellow-500', backgroundColor: 'bg-yellow-500/10' },
         "RESOLVED": { textColor: 'green-500', backgroundColor: 'bg-green-500/10' },
-        "PENDING": { textColor: 'blue-500', backgroundColor: 'bg-blue-500/10' },
+        "PENDING": { textColor: 'brand-blue', backgroundColor: 'bg-blue-500/10' },
     }
 
     const pendingAlertsColumns: Column<any>[] = [
@@ -183,11 +183,11 @@ export default function AlertsPage() {
             header: "Ação",
             cell: (record) => (
                 <>
-                    <Button variant="ghost" size="icon" className="w-6 h-6 hover:bg-transparent hover:cursor-pointer" onClick={() => handleCorrectiveActionRecord(record)}>
-                        <WrenchIcon className="w-4 h-4" />
-                    </Button>
                     <Button variant="ghost" size="icon" className="w-6 h-6 hover:bg-transparent hover:cursor-pointer" onClick={() => handleViewRecord(record)}>
                         <EyeIcon className="w-4 h-4" />
+                    </Button>
+                    <Button variant="ghost" size="icon" className="w-6 h-6 hover:bg-transparent hover:cursor-pointer" onClick={() => handleCorrectiveActionRecord(record)}>
+                        <WrenchIcon className="w-4 h-4" />
                     </Button>
                 </>
             )
@@ -235,7 +235,7 @@ export default function AlertsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {
                     alertCards?.map((alert) => (
-                        <AlertCard key={alert.id} title={alert.title} description={alert.description} data={alert.data} textColor={alertCardColors[alert.type].textColor} backgroundColor={alertCardColors[alert.type].backgroundColor} />
+                        <AlertCard key={alert.id} title={alert.title} description={alert.description} data={alert.data} textColor={alertCardColors[alert.type].textColor} backgroundColor={alertCardColors[alert.type].backgroundColor} type={alert.type} />
                     ))
                 }
             </div>

@@ -12,7 +12,6 @@ interface HeaderProps {
     notifications?: number;
 }
 
-// Map pathnames to page titles
 const getPageTitle = (pathname: string): string => {
     const titleMap: Record<string, string> = {
         '/dashboard': 'Dashboard',
@@ -38,7 +37,6 @@ export default function Header({ title, notifications }: HeaderProps) {
     const year = date.getFullYear()
     const formattedDate = `${day}/${month}/${year}`
 
-    // Use provided title or get it from pathname
     const pageTitle = title || getPageTitle(pathname || '')
 
     return (

@@ -17,8 +17,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 interface RecordData {
     id: string;
     name: string;
+    icon?: string;
     responsibleUser: string;
-    measurementTimes: string;
+    measurementTimes: string[] | string;
     foodsCount: number;
     active: boolean;
 }
@@ -292,7 +293,16 @@ export default function SectorsPage() {
     const columns: Column<RecordData>[] = [
         {
             header: 'Nome',
-            accessor: 'name',
+            cell: (record: RecordData) => {
+                const SelectedIcon = record.icon ? iconMap.get(record.icon) : undefined;
+                console.log(record.icon)
+                return (
+                    <span className="flex items-center gap-2">
+                        {SelectedIcon && <SelectedIcon className="h-4 w-4" />}
+                        <span>{record.name}</span>
+                    </span>
+                )
+            },
         },
         {
             header: 'Responsável',
@@ -300,11 +310,16 @@ export default function SectorsPage() {
         },
         {
             header: 'Horários',
-            cell: (record: RecordData) => (
-                <span className="flex flex-row gap-2">
-                    {record.measurementTimes?.join(', ') ?? '-'}
-                </span>
-            )
+            cell: (record: RecordData) => {
+                const times = Array.isArray(record.measurementTimes)
+                    ? record.measurementTimes.join(', ')
+                    : record.measurementTimes;
+                return (
+                    <span className="flex flex-row gap-2">
+                        {times || '-'}
+                    </span>
+                )
+            }
         },
         {
             header: 'Total de Alimentos',

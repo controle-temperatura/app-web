@@ -35,6 +35,8 @@ export default function ReportsPage() {
         totalPages: 0,
     });
 
+    const [isDownloading, setIsDownloading] = useState<boolean>(false);
+
     const [isDownloadDialogOpen, setIsDownloadDialogOpen] = useState<boolean>(false);
     const [downloadFormat, setDownloadFormat] = useState<string>("pdf");
     const [reportType, setReportType] = useState<string>("");
@@ -119,6 +121,7 @@ export default function ReportsPage() {
     };
 
     const handleDownload = async () => {
+        setIsDownloading(true);
         if (!reportType) return;
 
         const params = new URLSearchParams({
@@ -143,6 +146,8 @@ export default function ReportsPage() {
             setIsDownloadDialogOpen(false);
         } catch (error) {
             console.error(error);
+        } finally {
+            setIsDownloading(false);
         }
     }
 
@@ -333,7 +338,7 @@ export default function ReportsPage() {
                     </div>
                     <DialogFooter>
                         <Button variant="outline" onClick={() => setIsDownloadDialogOpen(false)}>Cancelar</Button>
-                        <Button onClick={handleDownload}>Download</Button>
+                        <Button onClick={handleDownload} disabled={isDownloading}>{isDownloading ? "Gerando Relatório..." : "Download"}</Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
