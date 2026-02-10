@@ -128,11 +128,12 @@ export default function ReportsPage() {
             format: downloadFormat,
         });
 
-        if (reportType === "DAILY" && reportDay) params.set("date", reportDay);
+        if ((reportType === "DAILY" || reportType === "CONFORMITY") && reportDay) params.set("date", reportDay);
         if (reportType === "WEEKLY" && reportWeek) params.set("week", reportWeek);
         if (reportType === "MONTHLY" && reportMonth) params.set("month", reportMonth);
 
         try {
+            console.log(`/reports/${reportType}?${params.toString()}`);
             const response = await api.download(`/reports/${reportType}?${params.toString()}`);
             const reportTypeNames: Record<string, string> = {
                 DAILY: "diario",

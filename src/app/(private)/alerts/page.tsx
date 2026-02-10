@@ -67,8 +67,9 @@ export default function AlertsPage() {
         toast.success("Ação corretiva realizada com sucesso");
 
         fetchAlterationsHistory(1);
-        setIsCorrectiveActionModalOpen(false);
         fetchAlerts(1);
+        fetchAlertCards();
+        setIsCorrectiveActionModalOpen(false);
         setCorrectedTemperature(null);
         setCorrectiveAction("");
         setSelectedAlertToCorrectiveAction(null);
