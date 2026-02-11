@@ -339,7 +339,7 @@ export default function FoodsPage() {
     return (
         <div className="flex flex-col gap-4">
             <Topbar onFilterChange={setFilters} handleOpenCreateModal={handleOpenCreateModal} />
-            <div className="grid grid-cols-3 gap-4 w-2/3 mx-auto mt-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full md:w-2/3 mx-auto mt-4">
                 <SimpleCard value={foods.totalCount} text="Total de Alimentos" />
                 <SimpleCard value={foods.sectorsCount} text="Setores Cadastrados" />
                 <SimpleCard value={foods.activeCount} text="Alimentos Ativos" />
@@ -463,43 +463,48 @@ export default function FoodsPage() {
                         <DialogTitle>Novo Alimento</DialogTitle>
                         <DialogDescription>Cadastre um novo alimento para controle de temperatura e conformidade.</DialogDescription>
                     </DialogHeader>
-                    <div className="grid gap-4 grid-cols-2">
-                            <div className="grid gap-2">
-                                <Label htmlFor="food-sector">Setor</Label>
-                                <Select
-                                    value={createForm.sectorId}
-                                    onValueChange={(value) => setCreateForm((prev) => ({ ...prev, sectorId: value }))}
-                                >
-                                    <SelectTrigger id="food-sector" className="w-full">
-                                        <SelectValue placeholder="Selecione o setor" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {sectors?.map((sector: any) => (
-                                            <SelectItem key={sector.id} value={sector.id}>
-                                                {sector.name}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                            <div className="grid gap-2">
-                                <Label htmlFor="food-name">Nome</Label>
-                                <Input
-                                    id="food-name"
-                                    value={createForm.name}
-                                    onChange={(event) => setCreateForm((prev) => ({ ...prev, name: event.target.value }))}
-                                    className="w-full"
-                                    disabled={useAutomaticName}
-                                />
-                            </div>
-                            <div className="col-start-2 flex items-center gap-2 pt-1">
+                    <div className="flex flex-col gap-4 w-full">
+                        <div className="grid gap-2">
+                            <Label htmlFor="food-sector">Setor</Label>
+                            <Select
+                                value={createForm.sectorId}
+                                onValueChange={(value) => setCreateForm((prev) => ({ ...prev, sectorId: value }))}
+                            >
+                                <SelectTrigger id="food-sector" className="w-full">
+                                    <SelectValue placeholder="Selecione o setor" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {sectors?.map((sector: any) => (
+                                        <SelectItem key={sector.id} value={sector.id}>
+                                            {sector.name}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        
+                        <div className="grid gap-2">
+                            <Label htmlFor="food-name">Nome</Label>
+                            <Input
+                                id="food-name"
+                                value={createForm.name}
+                                onChange={(event) => setCreateForm((prev) => ({ ...prev, name: event.target.value }))}
+                                className="w-full"
+                                disabled={useAutomaticName}
+                            />
+                            <div className="flex items-center gap-2">
                                 <Checkbox
                                     id="use-automatic-name"
                                     checked={useAutomaticName}
                                     onCheckedChange={(checked) => setUseAutomaticName(checked === true)}
                                 />
-                                <Label htmlFor="use-automatic-name">Nome automático</Label>
+                                <Label htmlFor="use-automatic-name" className="text-sm text-muted-foreground font-normal cursor-pointer">
+                                    Nome automático
+                                </Label>
                             </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="grid gap-2">
                                 <Label htmlFor="food-temp-min">Temperatura mínima</Label>
                                 <div className="flex items-center gap-2">
@@ -513,7 +518,7 @@ export default function FoodsPage() {
                                             setCreateForm((prev) => ({ ...prev, tempMin: parseNumberInput(event.target.value) }))
                                         }
                                     />
-                                    <p>°C</p>
+                                    <span className="text-sm text-muted-foreground">°C</span>
                                 </div>
                             </div>
                             <div className="grid gap-2">
@@ -529,18 +534,19 @@ export default function FoodsPage() {
                                             setCreateForm((prev) => ({ ...prev, tempMax: parseNumberInput(event.target.value) }))
                                         }
                                     />
-                                    <p>°C</p>
+                                    <span className="text-sm text-muted-foreground">°C</span>
                                 </div>
                             </div>
                         </div>
-                        <DialogFooter>
-                            <Button variant="outline" onClick={() => handleCancelCreate()}>
-                                Cancelar
-                            </Button>
-                            <Button onClick={() => handleCreateFood()}>
-                                Adicionar
-                            </Button>
-                        </DialogFooter>
+                    </div>
+                    <DialogFooter className="flex-col sm:flex-row gap-2">
+                        <Button variant="outline" onClick={() => handleCancelCreate()} className="w-full sm:w-auto">
+                            Cancelar
+                        </Button>
+                        <Button onClick={() => handleCreateFood()} className="w-full sm:w-auto">
+                            Adicionar
+                        </Button>
+                    </DialogFooter>
                 </DialogContent>
             </Dialog>
 

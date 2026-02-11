@@ -218,8 +218,8 @@ export default function ReportsPage() {
                         className="w-6 h-6 hover:bg-transparent hover:cursor-pointer"
                         onClick={() => handleDownloadSavedReport(record)}
                     >
-                        <DownloadIcon className="w-6 h-6" />
-                        <span className="text-sm">Download</span>
+                        <DownloadIcon className="w-4 h-4" />
+                        <span className="text-sm ml-1 hidden sm:inline">Download</span>
                     </Button>
                 </div>
             )
@@ -332,10 +332,10 @@ export default function ReportsPage() {
                     <DialogDescription>
                         <p>Selecione o formato de download</p>
                     </DialogDescription>
-                    <div className="flex flex-row gap-4">
-                        <Button variant={downloadFormat === "pdf" ? "default" : "outline"} onClick={() => setDownloadFormat("pdf")}>PDF</Button>
-                        <Button variant={downloadFormat === "xlsx" ? "default" : "outline"} onClick={() => setDownloadFormat("xlsx")}>Excel</Button>
-                        <Button variant={downloadFormat === "csv" ? "default" : "outline"} onClick={() => setDownloadFormat("csv")}>CSV</Button>
+                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
+                        <Button className="w-full sm:w-auto" variant={downloadFormat === "pdf" ? "default" : "outline"} onClick={() => setDownloadFormat("pdf")}>PDF</Button>
+                        <Button className="w-full sm:w-auto" variant={downloadFormat === "xlsx" ? "default" : "outline"} onClick={() => setDownloadFormat("xlsx")}>Excel</Button>
+                        <Button className="w-full sm:w-auto" variant={downloadFormat === "csv" ? "default" : "outline"} onClick={() => setDownloadFormat("csv")}>CSV</Button>
                     </div>
                     <DialogFooter>
                         <Button variant="outline" onClick={() => setIsDownloadDialogOpen(false)}>Cancelar</Button>

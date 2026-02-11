@@ -52,42 +52,48 @@ export function Sidebar() {
 
     return (
         <SidebarPrimitive>
-            <SidebarContent className="relative">
-                <SidebarHeader className="p-4">
+            <SidebarContent className="flex flex-col h-full">
+                <SidebarHeader className="p-4 flex-shrink-0">
                     <Image src={company?.logoUrl || "https://freesvg.org/img/logo-generic.png"} alt="Logo" width={180} height={100} className="w-auto h-12" />
                 </SidebarHeader>
-                <SidebarMenu className="space-y-2 p-4">
-                    <SidebarMenuItem>
-                        <SidebarItem icon={<LayoutDashboardIcon className="h-4 w-4" />} label="Dashboard" href="/dashboard" isActive={pathname === '/dashboard'} onClick={() => router.push("/dashboard")} />
-                    </SidebarMenuItem>
-                    <SidebarMenuItem>
-                        <SidebarItem icon={<SheetIcon className="h-4 w-4" />} label="Tabelas" href="/tables" isActive={pathname === '/tables'} onClick={() => router.push("/tables")} />
-                    </SidebarMenuItem>
-                    {(isAdmin || isAuditor) && (
+                <div className="flex-1 overflow-y-auto">
+                    <SidebarMenu className="space-y-2 p-4">
                         <SidebarMenuItem>
-                            <SidebarItem icon={<FileTextIcon className="h-4 w-4" />} label="Relatórios" href="/reports" isActive={pathname === '/reports'} onClick={() => router.push("/reports")} />
+                            <SidebarItem icon={<LayoutDashboardIcon className="h-4 w-4" />} label="Dashboard" href="/dashboard" isActive={pathname === '/dashboard'} onClick={() => router.push("/dashboard")} />
                         </SidebarMenuItem>
-                    )}
-                    <SidebarMenuItem>
-                        <SidebarItem icon={<BellIcon className="h-4 w-4" />} label="Alertas" href="/alerts" isActive={pathname === '/alerts'} onClick={() => router.push("/alerts")} />
-                    </SidebarMenuItem>
-                    <SidebarMenuItem>
-                        <SidebarItem icon={<ListTreeIcon className="h-4 w-4" />} label="Alimentos" href="/foods" isActive={pathname === '/foods'} onClick={() => router.push("/foods")} />
-                    </SidebarMenuItem>
-                    {isAdmin && (
                         <SidebarMenuItem>
-                            <SidebarItemAccordion 
-                                icon={<SettingsIcon className="h-4 w-4" />} 
-                                label="Configurações" 
-                                subItems={settingsSubItems}
-                                isActive={isSettingsActive}
-                            />
+                            <SidebarItem icon={<SheetIcon className="h-4 w-4" />} label="Tabelas" href="/tables" isActive={pathname === '/tables'} onClick={() => router.push("/tables")} />
                         </SidebarMenuItem>
-                    )}
-                    <SidebarMenuItem className="absolute bottom-4">
-                        <SidebarItem icon={<LogOutIcon className="h-4 w-4" />} label="Sair" href="#" isActive={false} onClick={handleLogout} isLogout />
-                    </SidebarMenuItem>
-                </SidebarMenu>
+                        {(isAdmin || isAuditor) && (
+                            <SidebarMenuItem>
+                                <SidebarItem icon={<FileTextIcon className="h-4 w-4" />} label="Relatórios" href="/reports" isActive={pathname === '/reports'} onClick={() => router.push("/reports")} />
+                            </SidebarMenuItem>
+                        )}
+                        <SidebarMenuItem>
+                            <SidebarItem icon={<BellIcon className="h-4 w-4" />} label="Alertas" href="/alerts" isActive={pathname === '/alerts'} onClick={() => router.push("/alerts")} />
+                        </SidebarMenuItem>
+                        <SidebarMenuItem>
+                            <SidebarItem icon={<ListTreeIcon className="h-4 w-4" />} label="Alimentos" href="/foods" isActive={pathname === '/foods'} onClick={() => router.push("/foods")} />
+                        </SidebarMenuItem>
+                        {isAdmin && (
+                            <SidebarMenuItem>
+                                <SidebarItemAccordion 
+                                    icon={<SettingsIcon className="h-4 w-4" />} 
+                                    label="Configurações" 
+                                    subItems={settingsSubItems}
+                                    isActive={isSettingsActive}
+                                />
+                            </SidebarMenuItem>
+                        )}
+                    </SidebarMenu>
+                </div>
+                <div className="flex-shrink-0 border-t border-sidebar-border">
+                    <SidebarMenu className="p-4">
+                        <SidebarMenuItem>
+                            <SidebarItem icon={<LogOutIcon className="h-4 w-4" />} label="Sair" href="#" isActive={false} onClick={handleLogout} isLogout />
+                        </SidebarMenuItem>
+                    </SidebarMenu>
+                </div>
             </SidebarContent>
         </SidebarPrimitive>
     )

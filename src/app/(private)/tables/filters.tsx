@@ -82,8 +82,8 @@ export default function Filters({ onFilterChange }: FiltersProps) {
                 <FilterIcon className="h-4 w-4" />
                 <h1 className="text-xl font-bold">Filtros</h1>
             </div>
-            <div className="flex items-center gap-2">
-                <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-2">
+            <div className="flex items-center gap-2 flex-col md:flex-row">
+                <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-2 w-full">
                     <div className="flex flex-col gap-2">
                         <div 
                             className="relative w-full cursor-pointer"
@@ -171,7 +171,7 @@ export default function Filters({ onFilterChange }: FiltersProps) {
                         </Select>
                     </div>
                 </div>
-                <div className="relative">
+                <div className="relative w-full">
                     <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary pointer-events-none z-10" />
                     <Input 
                         type="text" 

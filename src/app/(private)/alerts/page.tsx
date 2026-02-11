@@ -225,7 +225,7 @@ export default function AlertsPage() {
             cell: (record) => (
                 <Button variant="ghost" size="icon" className="w-6 h-6 hover:bg-transparent hover:cursor-pointer" onClick={() => handleViewCorrectionRecord(record)}>
                     <FileTextIcon className="w-4 h-4" /> 
-                    Visualizar
+                    <span className="text-sm ml-1 hidden sm:inline">Visualizar</span>
                 </Button>
             )
         }

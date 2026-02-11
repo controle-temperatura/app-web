@@ -361,7 +361,7 @@ export default function SectorsPage() {
     return (
         <div className="flex flex-col gap-4">
             <Topbar onFilterChange={setFilters} handleOpenCreateModal={handleOpenCreateModal} />
-            <div className="grid grid-cols-3 gap-4 w-2/3 mx-auto mt-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full md:w-2/3 mx-auto mt-4">
                 <SimpleCard value={sectors?.totalCount} text="Total de Setores" />
                 <SimpleCard value={sectors?.activeCount} text="Setores Ativos" />
                 <SimpleCard value={sectors?.responsibleUsersCount} text="Responsáveis" />

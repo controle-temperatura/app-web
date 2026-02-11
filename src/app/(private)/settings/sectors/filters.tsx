@@ -26,9 +26,9 @@ export default function Filters({ onFilterChange }: FiltersProps) {
     }, [selectedActive, searchText]);
 
     return (
-        <div className="flex flex-row gap-4">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full sm:w-auto">
             <Select value={selectedActive === null ? "_clear_" : selectedActive.toString()} onValueChange={(value) => setSelectedActive(value === "_clear_" ? null : value === "true")}>
-                <SelectTrigger id="active-filter" className="w-full cursor-pointer">
+                <SelectTrigger id="active-filter" className="w-full sm:w-auto cursor-pointer">
                     <span className="flex items-center gap-2">
                         <PowerIcon className="w-4 h-4 text-primary" />
                         <SelectValue placeholder="Status"  className="w-full" />
@@ -41,14 +41,14 @@ export default function Filters({ onFilterChange }: FiltersProps) {
                     ))}
                 </SelectContent>
             </Select>
-            <div className="relative">
+            <div className="relative w-full sm:w-56">
                 <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary pointer-events-none z-10" />
                 <Input 
                     type="text" 
                     placeholder="Pesquisar" 
                     value={searchText} 
                     onChange={(e) => setSearchText(e.target.value)} 
-                    className="w-56 pl-10" 
+                    className="w-full pl-10" 
                 />
             </div>
         </div>

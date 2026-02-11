@@ -36,10 +36,10 @@ export default function LoginForm({ company }: LoginFormProps) {
     }
 
     return (
-        <Card className="h-120 w-96 flex flex-col justify-center rounded-r-none">
+        <Card className="w-full md:w-96 md:h-120 flex flex-col justify-center rounded-xl md:rounded-r-none">
             <CardHeader className="space-y-1 text-center">
-                <CardTitle className="text-3xl font-bold">Bem vindo!</CardTitle>
-                <CardDescription className="text-md">Entre na sua conta {company?.shortName}</CardDescription>
+                <CardTitle className="text-2xl sm:text-3xl font-bold">Bem vindo!</CardTitle>
+                <CardDescription className="text-sm sm:text-md">Entre na sua conta {company?.shortName}</CardDescription>
             </CardHeader>
 
             <CardContent className="space-y-4">

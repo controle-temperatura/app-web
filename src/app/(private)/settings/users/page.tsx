@@ -245,7 +245,7 @@ export default function UsersPage() {
     return (
         <div className="flex flex-col gap-6">
             <Topbar onFilterChange={handleFilterChange} handleOpenCreateModal={handleOpenCreateModal} />
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 w-2/3 mx-auto gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 w-full md:w-2/3 mx-auto gap-4">
                 <SimpleCard value={users?.totalCount} text="Total de usuários" />
                 <SimpleCard value={users?.totalColaborators} text="Colaboradores" />
                 <SimpleCard value={users?.totalAdmins} text="Administradores" />

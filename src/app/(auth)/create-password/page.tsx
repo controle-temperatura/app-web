@@ -61,12 +61,12 @@ export default function CreatePasswordPage() {
     }
 
     return (
-        <main className="flex min-h-screen items-center justify-center bg-muted">
-            <div className="w-full flex max-w-4xl px-4 items-center justify-center">
-                <Card className="h-120 w-96 flex flex-col justify-center rounded-r-none">
+        <main className="flex min-h-screen items-center justify-center bg-muted p-4">
+            <div className="w-full flex flex-col md:flex-row max-w-4xl items-center justify-center gap-0">
+                <Card className="w-full md:w-96 md:h-120 flex flex-col justify-center rounded-xl md:rounded-r-none">
                     <CardHeader className="space-y-1 text-center">
-                        <CardTitle className="text-3xl font-bold">Crie sua senha</CardTitle>
-                        <CardDescription className="text-md">
+                        <CardTitle className="text-2xl sm:text-3xl font-bold">Crie sua senha</CardTitle>
+                        <CardDescription className="text-sm sm:text-md">
                             Defina uma nova senha para acessar o sistema
                         </CardDescription>
                     </CardHeader>
@@ -117,7 +117,7 @@ export default function CreatePasswordPage() {
                         </form>
                     </CardContent>
                 </Card>
-                <div className="w-96 h-120 rounded-r-xl flex items-center justify-center bg-slate-200">
+                <div className="hidden md:flex w-full md:w-96 h-48 md:h-120 rounded-b-xl md:rounded-r-xl md:rounded-bl-none items-center justify-center bg-slate-200">
                     <Image
                         src={company?.logoUrl || "https://aneto.com.br/wp-content/uploads/2025/05/logo.svg"}
                         alt="Logo"
