@@ -311,11 +311,11 @@ export default function UsersPage() {
                             <Label>Senha</Label>
                             <RadioGroup value={createForm.passwordType} onValueChange={(value) => setCreateForm({ ...createForm, passwordType: value as "LINK" | "MANUAL" })}>
                                 <div className="flex flex-row gap-2">
-                                    <RadioGroupItem value="LINK" selected={createForm.passwordType === "LINK"}></RadioGroupItem>
+                                    <RadioGroupItem value="LINK" ></RadioGroupItem>
                                     <p>Gerar senha automática e enviar por e-mail</p>
                                 </div>
                                 <div className="flex flex-row gap-2">
-                                    <RadioGroupItem value="MANUAL" selected={createForm.passwordType === "MANUAL"}></RadioGroupItem>
+                                    <RadioGroupItem value="MANUAL" ></RadioGroupItem>
                                     <p>Definir senha manualmente</p>
                                 </div>
                             </RadioGroup>
