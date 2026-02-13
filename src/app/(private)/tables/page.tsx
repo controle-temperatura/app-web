@@ -38,7 +38,7 @@ interface RecordData {
     user: string;
     alert?: string | null;
     correctedTemperature?: string | number | null;
-    resolved?: boolean | null;
+    resolved?: boolean | undefined;
     resolvedAt?: string | null;
     resolvedBy?: string | null;
     correctiveAction?: string | null;
