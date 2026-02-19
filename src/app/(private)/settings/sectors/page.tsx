@@ -120,7 +120,8 @@ export default function SectorsPage() {
             if (name === "LucideIcon" || name === "Icon" || name === "createLucideIcon") return [];
             if (name[0] !== name[0].toUpperCase()) return [];
             if (typeof Icon !== "function" && typeof Icon !== "object") return [];
-            return [{ name, Icon: Icon as LucideIcon }];
+            if (name.startsWith("Lucide") || !name.endsWith("Icon")) return [];
+            return [{ name, Icon: Icon as unknown as LucideIcon }];
         });
     }, []);
 

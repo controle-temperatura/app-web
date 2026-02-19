@@ -20,6 +20,7 @@ const getPageTitle = (pathname: string): string => {
         '/reports': 'Relatórios',
         '/alerts': 'Alertas',
         '/foods': 'Alimentos',
+        '/home': 'Registrar temperatura',
         '/settings/company': 'Configurações - Empresa',
         '/settings/users': 'Configurações - Usuários',
         '/settings/sectors': 'Configurações - Setores',

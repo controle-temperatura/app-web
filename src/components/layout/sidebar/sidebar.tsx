@@ -4,7 +4,7 @@ import { Sidebar as SidebarPrimitive, SidebarContent, SidebarHeader, SidebarMenu
 import Image from "next/image"
 import SidebarItem from "./sidebar-item"
 import SidebarItemAccordion from "./sidebar-item-accordion"
-import { HomeIcon, ThermometerIcon, SettingsIcon, LogOutIcon, SheetIcon, LayoutDashboardIcon, BellIcon, ListTreeIcon, FileTextIcon, UserIcon, ShieldIcon, PaletteIcon, GroupIcon, ChefHatIcon, UtensilsCrossedIcon, UsersIcon } from "lucide-react"
+import { HomeIcon, ThermometerIcon, SettingsIcon, LogOutIcon, SheetIcon, LayoutDashboardIcon, BellIcon, ListTreeIcon, FileTextIcon, UserIcon, ShieldIcon, PaletteIcon, GroupIcon, ChefHatIcon, UtensilsCrossedIcon, UsersIcon, SmartphoneIcon } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
 import { useRouter, usePathname } from "next/navigation"
 import { useCompany } from "@/hooks/use-company"
@@ -74,6 +74,9 @@ export function Sidebar() {
                         </SidebarMenuItem>
                         <SidebarMenuItem>
                             <SidebarItem icon={<ListTreeIcon className="h-4 w-4" />} label="Alimentos" href="/foods" isActive={pathname === '/foods'} onClick={() => router.push("/foods")} />
+                        </SidebarMenuItem>
+                        <SidebarMenuItem>
+                            <SidebarItem icon={<SmartphoneIcon className="h-4 w-4" />} label="Registrar temperatura" href="/home" isActive={pathname === '/home'} onClick={() => router.push("/home")} />
                         </SidebarMenuItem>
                         {isAdmin && (
                             <SidebarMenuItem>

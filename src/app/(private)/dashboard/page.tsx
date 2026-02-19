@@ -1,9 +1,11 @@
 "use client"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 import { useEffect, useState, useMemo } from "react"
+import Link from "next/link"
 import { api } from "@/lib/api"
-import { AlertCircleIcon, AlertTriangleIcon, CheckCircleIcon, WrenchIcon } from "lucide-react"
+import { AlertCircleIcon, AlertTriangleIcon, CheckCircleIcon, WrenchIcon, SmartphoneIcon } from "lucide-react"
 import DashboardCard from "./card"
 import { PieChart, Pie, BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 
@@ -152,6 +154,14 @@ export default function DashboardPage() {
 
     return (
         <div className="space-y-6">
+            <div className="flex justify-end p-4">
+                <Button variant="outline" asChild className="gap-2">
+                    <Link href="/home">
+                        <SmartphoneIcon className="h-4 w-4" />
+                        Registrar temperatura
+                    </Link>
+                </Button>
+            </div>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 p-4">
                 {
                     cards.map((card) => (
