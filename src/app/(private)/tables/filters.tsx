@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { api } from "@/lib/api";
 import { Button } from "@/components/ui/button";
+import { formatDateToDDMMYYYY } from "@/lib/utils";
 
 export interface FilterValues {
     date: string;
@@ -93,12 +94,21 @@ export default function Filters({ onFilterChange }: FiltersProps) {
                             }}
                         >
                             <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary pointer-events-none z-10" />
-                            <Input 
+                            {/* Input nativo escondido: usado só para abrir o picker no celular */}
+                            <input
                                 id="date-filter"
-                                type="date" 
+                                type="date"
                                 value={selectedDate}
                                 onChange={(e) => setSelectedDate(e.target.value)}
-                                className="w-full pl-10 cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-inner-spin-button]:hidden [&::-webkit-clear-button]:hidden"
+                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                aria-hidden
+                            />
+                            {/* Campo visível sempre em dd/mm/yyyy */}
+                            <Input
+                                readOnly
+                                value={formatDateToDDMMYYYY(selectedDate)}
+                                className="w-full pl-10 cursor-pointer bg-background"
+                                tabIndex={-1}
                             />
                         </div>
                     </div>
@@ -171,7 +181,7 @@ export default function Filters({ onFilterChange }: FiltersProps) {
                         </Select>
                     </div>
                 </div>
-                <div className="relative w-full">
+                <div className="relative w-1/3">
                     <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary pointer-events-none z-10" />
                     <Input 
                         type="text" 

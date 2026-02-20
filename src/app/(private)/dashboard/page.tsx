@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { useEffect, useState, useMemo } from "react"
 import Link from "next/link"
 import { api } from "@/lib/api"
-import { AlertCircleIcon, AlertTriangleIcon, CheckCircleIcon, WrenchIcon, SmartphoneIcon } from "lucide-react"
+import { AlertCircleIcon, AlertTriangleIcon, CheckCircleIcon, WrenchIcon, PlusIcon  } from "lucide-react"
 import DashboardCard from "./card"
 import { PieChart, Pie, BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 
@@ -157,7 +157,7 @@ export default function DashboardPage() {
             <div className="flex justify-end p-4">
                 <Button variant="outline" asChild className="gap-2">
                     <Link href="/home">
-                        <SmartphoneIcon className="h-4 w-4" />
+                        <PlusIcon className="h-4 w-4" />
                         Registrar temperatura
                     </Link>
                 </Button>

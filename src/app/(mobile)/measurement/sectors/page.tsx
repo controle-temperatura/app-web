@@ -10,6 +10,20 @@ import { Sector } from '@/components/shared/sector';
 import { ChevronLeftIcon, ChevronRightIcon, Loader2Icon } from 'lucide-react';
 import { toast } from 'sonner';
 
+const SM_BREAKPOINT = 640;
+
+function useIsSmOrSmaller() {
+    const [isSm, setIsSm] = useState(false);
+    useEffect(() => {
+        const mql = window.matchMedia(`(max-width: ${SM_BREAKPOINT - 1}px)`);
+        const onChange = () => setIsSm(window.innerWidth < SM_BREAKPOINT);
+        mql.addEventListener('change', onChange);
+        setIsSm(window.innerWidth < SM_BREAKPOINT);
+        return () => mql.removeEventListener('change', onChange);
+    }, []);
+    return isSm;
+}
+
 interface Sector {
     id: string;
     name: string;
@@ -24,17 +38,20 @@ interface SectorsResponse {
 
 export default function MeasurementSectorsPage() {
     const router = useRouter();
+    const isSmOrSmaller = useIsSmOrSmaller();
     const [sectors, setSectors] = useState<Sector[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+
+    const limit = isSmOrSmaller ? 8 : 9;
 
     const fetchData = useCallback(async (page: number) => {
         setIsLoading(true);
         try {
             const timestamp = new Date().getTime();
             const response = await api.get<any>(
-                `/sectors/active?page=${page}&limit=8&_t=${timestamp}`
+                `/sectors/active?page=${page}&limit=${limit}&_t=${timestamp}`
             );
             setSectors(response.sectors ?? []);
             setTotalPages(response.pagination.totalPages ?? 1);
@@ -44,7 +61,7 @@ export default function MeasurementSectorsPage() {
         } finally {
             setIsLoading(false);
         }
-    }, []);
+    }, [limit]);
 
     useEffect(() => {
         fetchData(currentPage);

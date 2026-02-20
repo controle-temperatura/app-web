@@ -10,6 +10,7 @@ import { Column, DataTable, Pagination, PaginationInfo } from "@/components/shar
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { formatDateToDDMMYYYY } from "@/lib/utils";
 
 export default function ReportsPage() {
     const today = new Date();
@@ -296,11 +297,28 @@ export default function ReportsPage() {
                                 {reportPeriodType === "day" && (
                                     <>
                                         <label className="text-sm text-gray-500">Selecione o dia</label>
-                                        <Input
-                                            type="date"
-                                            value={reportDay}
-                                            onChange={(event) => setReportDay(event.target.value)}
-                                        />
+                                        <div
+                                            className="relative w-full cursor-pointer"
+                                            onClick={() => {
+                                                const input = document.getElementById("report-day-date") as HTMLInputElement;
+                                                input?.showPicker?.();
+                                            }}
+                                        >
+                                            <input
+                                                id="report-day-date"
+                                                type="date"
+                                                value={reportDay}
+                                                onChange={(e) => setReportDay(e.target.value)}
+                                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                                aria-hidden
+                                            />
+                                            <Input
+                                                readOnly
+                                                value={formatDateToDDMMYYYY(reportDay)}
+                                                className="w-full cursor-pointer bg-background"
+                                                tabIndex={-1}
+                                            />
+                                        </div>
                                     </>
                                 )}
                                 {reportPeriodType === "week" && (

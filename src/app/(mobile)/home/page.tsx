@@ -27,18 +27,17 @@ interface AlertItem {
     recommendedTemperature?: number;
 }
 
+
 export default function HomePage() {
     const router = useRouter();
     const { isAuthenticated, isLoading: authLoading } = useAuth();
     const date = new Date();
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear();
     const formattedDate = `${day}/${month}/${year}`;
     const dateForRequest = `${year}-${month}-${day}`;
-    const weekday =
-        date.toLocaleDateString('pt-BR', { weekday: 'long' }).charAt(0).toUpperCase() +
-        date.toLocaleDateString('pt-BR', { weekday: 'long' }).slice(1);
+    const weekday = date.toLocaleDateString('pt-BR', { weekday: 'long' }).charAt(0).toUpperCase() + date.toLocaleDateString('pt-BR', { weekday: 'long' }).slice(1);
 
     const [userMeasurements, setUserMeasurements] = useState<number>(0);
     const [alerts, setAlerts] = useState<AlertItem[]>([]);
