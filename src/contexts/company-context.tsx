@@ -46,7 +46,8 @@ export function CompanyProvider({ children }: { children: ReactNode }) {
     const updateCompany = useCallback(async (data: Partial<Company>) => {
         try {
             setError(null)
-            const updatedCompany = await api.put<Company>("/company", data)
+            console.log(company?.id, data)
+            const updatedCompany = await api.put<Company>(`/company/${company?.id}`, data)
             setCompany(updatedCompany)
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : "Erro ao atualizar empresa"
