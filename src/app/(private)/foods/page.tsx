@@ -16,6 +16,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import { z } from "zod";
 import { useUser } from "@/hooks/use-user";
+import { sanitizeTemperatureInput } from "@/lib/utils";
 
 interface RecordData {
     id: string;
@@ -33,7 +34,10 @@ type FoodForm = {
     tempMax: number | undefined;
 };
 
-type EditForm = FoodForm & {
+/** Estado do formulário com temperaturas como string (separador decimal "." apenas). */
+type FoodFormState = Omit<FoodForm, "tempMin" | "tempMax"> & { tempMin: string; tempMax: string };
+
+type EditForm = FoodFormState & {
     id?: string;
     active: boolean;
 };
@@ -71,11 +75,11 @@ export default function FoodsPage() {
     const [sectors, setSectors] = useState<any>([]);
 
     const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
-    const [createForm, setCreateForm] = useState<FoodForm>({
+    const [createForm, setCreateForm] = useState<FoodFormState>({
         name: "",
         sectorId: "",
-        tempMin: undefined,
-        tempMax: undefined,
+        tempMin: "",
+        tempMax: "",
     });
 
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
@@ -119,8 +123,8 @@ export default function FoodsPage() {
         setCreateForm({
             name: "",
             sectorId: "",
-            tempMin: undefined,
-            tempMax: undefined,
+            tempMin: "",
+            tempMax: "",
         });
         setUseAutomaticName(false);
         setSavedName("");
@@ -146,10 +150,11 @@ export default function FoodsPage() {
     }, [useAutomaticName])
 
     const handleCreateFood = async () => {
-        const payload = {
-            ...createForm,
-            tempMin: Number(createForm.tempMin),
-            tempMax: Number(createForm.tempMax),
+        const payload: FoodForm = {
+            name: createForm.name,
+            sectorId: createForm.sectorId,
+            tempMin: parseNumberInput(createForm.tempMin),
+            tempMax: parseNumberInput(createForm.tempMax),
         };
 
         const parsedPayload = validateFoodPayload(payload);
@@ -160,8 +165,8 @@ export default function FoodsPage() {
         setCreateForm({
             name: "",
             sectorId: "",
-            tempMin: undefined,
-            tempMax: undefined,
+            tempMin: "",
+            tempMax: "",
         });
         fetchFoods(1, filters);
         setUseAutomaticName(false);
@@ -181,8 +186,8 @@ export default function FoodsPage() {
         name: "",
         active: true,
         sectorId: "",
-        tempMin: undefined,
-        tempMax: undefined,
+        tempMin: "",
+        tempMax: "",
     });
 
     const handleEditFood = async (record: RecordData) => {
@@ -192,8 +197,8 @@ export default function FoodsPage() {
             name: response?.name ?? "",
             active: response?.active ?? true,
             sectorId: response?.sectorId ?? "",
-            tempMin: response?.tempMin ?? undefined,
-            tempMax: response?.tempMax ?? undefined,
+            tempMin: response?.tempMin != null ? String(response.tempMin) : "",
+            tempMax: response?.tempMax != null ? String(response.tempMax) : "",
         });
         setIsEditModalOpen(true);
     }
@@ -202,8 +207,8 @@ export default function FoodsPage() {
         const parsedPayload = validateFoodPayload({
             name: editForm.name,
             sectorId: editForm.sectorId,
-            tempMin: Number(editForm.tempMin),
-            tempMax: Number(editForm.tempMax),
+            tempMin: parseNumberInput(editForm.tempMin),
+            tempMax: parseNumberInput(editForm.tempMax),
         });
         if (!parsedPayload) return;
 
@@ -229,8 +234,8 @@ export default function FoodsPage() {
             name: "",
             active: true,
             sectorId: "",
-            tempMin: undefined,
-            tempMax: undefined,
+            tempMin: "",
+            tempMax: "",
         });
     }
     const handleOpenCreateModal = () => {
@@ -238,8 +243,8 @@ export default function FoodsPage() {
         setCreateForm({
             name: "",
             sectorId: "",
-            tempMin: undefined,
-            tempMax: undefined,
+            tempMin: "",
+            tempMax: "",
         });
     }
 
@@ -421,28 +426,28 @@ export default function FoodsPage() {
                                 <Label htmlFor="food-temp-min">Temperatura mínima</Label>
                                 <Input
                                     id="food-temp-min"
-                                    type="number"
-                                    step="0.01"
-                                    value={editForm.tempMin ?? ""}
+                                    type="text"
+                                    inputMode="decimal"
+                                    value={editForm.tempMin}
                                     onChange={(event) =>
-                                        setEditForm((prev) => ({ ...prev, tempMin: parseNumberInput(event.target.value) }))
+                                        setEditForm((prev) => ({ ...prev, tempMin: sanitizeTemperatureInput(event.target.value) }))
                                     }
-                                    placeholder="0"
-                                    className="w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                    placeholder="Ex: 0 ou 2.5"
+                                    className="w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
                                 />
                             </div>
                             <div className="grid gap-2">
                                 <Label htmlFor="food-temp-max">Temperatura máxima</Label>
                                 <Input
                                     id="food-temp-max"
-                                    type="number"
-                                    step="0.01"
-                                    value={editForm.tempMax ?? ""}
+                                    type="text"
+                                    inputMode="decimal"
+                                    value={editForm.tempMax}
                                     onChange={(event) =>
-                                        setEditForm((prev) => ({ ...prev, tempMax: parseNumberInput(event.target.value) }))
+                                        setEditForm((prev) => ({ ...prev, tempMax: sanitizeTemperatureInput(event.target.value) }))
                                     }
-                                    placeholder="0"
-                                    className="w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                    placeholder="Ex: 0 ou 2.5"
+                                    className="w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
                                 />
                             </div>
                         </div>
@@ -510,12 +515,13 @@ export default function FoodsPage() {
                                 <div className="flex items-center gap-2">
                                     <Input
                                         id="food-temp-min"
-                                        type="number"
-                                        step="0.01"
-                                        value={createForm.tempMin ?? ""}
-                                        className="[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                        type="text"
+                                        inputMode="decimal"
+                                        value={createForm.tempMin}
+                                        placeholder="Ex: 0 ou 2.5"
+                                        className="w-full"
                                         onChange={(event) =>
-                                            setCreateForm((prev) => ({ ...prev, tempMin: parseNumberInput(event.target.value) }))
+                                            setCreateForm((prev) => ({ ...prev, tempMin: sanitizeTemperatureInput(event.target.value) }))
                                         }
                                     />
                                     <span className="text-sm text-muted-foreground">°C</span>
@@ -526,12 +532,13 @@ export default function FoodsPage() {
                                 <div className="flex items-center gap-2">
                                     <Input
                                         id="food-temp-max"
-                                        type="number"
-                                        step="0.01"
-                                        value={createForm.tempMax ?? ""}
-                                        className="[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                        type="text"
+                                        inputMode="decimal"
+                                        value={createForm.tempMax}
+                                        placeholder="Ex: 0 ou 2.5"
+                                        className="w-full"
                                         onChange={(event) =>
-                                            setCreateForm((prev) => ({ ...prev, tempMax: parseNumberInput(event.target.value) }))
+                                            setCreateForm((prev) => ({ ...prev, tempMax: sanitizeTemperatureInput(event.target.value) }))
                                         }
                                     />
                                     <span className="text-sm text-muted-foreground">°C</span>

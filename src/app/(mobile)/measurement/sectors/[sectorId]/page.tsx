@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { api } from '@/lib/api';
+import { sanitizeTemperatureInput } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -136,11 +137,11 @@ export default function RegisterTemperaturePage() {
                         <CardContent>
                             <div className="relative w-full">
                                 <Input
-                                    type="number"
+                                    type="text"
                                     inputMode="decimal"
-                                    placeholder="Ex: 12"
+                                    placeholder="Ex: 12 ou 12.5"
                                     value={temperature}
-                                    onChange={(e) => setTemperature(e.target.value)}
+                                    onChange={(e) => setTemperature(sanitizeTemperatureInput(e.target.value))}
                                     className="pr-12 text-xl font-bold"
                                 />
                                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xl font-bold text-muted-foreground">
