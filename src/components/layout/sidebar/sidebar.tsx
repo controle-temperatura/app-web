@@ -61,10 +61,10 @@ export function Sidebar() {
                         <SidebarMenuItem>
                             <SidebarItem icon={<LayoutDashboardIcon className="h-4 w-4" />} label="Dashboard" href="/dashboard" isActive={pathname === '/dashboard'} onClick={() => router.push("/dashboard")} />
                         </SidebarMenuItem>
-                        <SidebarMenuItem>
-                            <SidebarItem icon={<SheetIcon className="h-4 w-4" />} label="Tabelas" href="/tables" isActive={pathname === '/tables'} onClick={() => router.push("/tables")} />
-                        </SidebarMenuItem>
                         {(isAdmin || isAuditor) && (
+                            <SidebarMenuItem>
+                                <SidebarItem icon={<SheetIcon className="h-4 w-4" />} label="Tabelas" href="/tables" isActive={pathname === '/tables'} onClick={() => router.push("/tables")} />
+                            </SidebarMenuItem>
                             <SidebarMenuItem>
                                 <SidebarItem icon={<FileTextIcon className="h-4 w-4" />} label="Relatórios" href="/reports" isActive={pathname === '/reports'} onClick={() => router.push("/reports")} />
                             </SidebarMenuItem>
